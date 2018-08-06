@@ -28,7 +28,12 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public boolean contains(String element) {
-		// TODO Auto-generated method stub
+		//
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -54,8 +59,32 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public void add(int index, String element) {
-		// TODO Auto-generated method stub
+		//
+		if (array.length == size) {
+			array = arraySizeIncrease(array);
 
+			String[] tempArray = new String[array.length];
+
+			tempArray = copyOf(array, index);
+
+			tempArray[index] = element;
+			for (int i = index + 1; i < size+1; i++) {
+				tempArray[i] = array[i - 1];
+			}
+			array = tempArray;
+		} else {
+			String[] tempArray = new String[array.length];
+
+			tempArray = copyOf(array, index - 1);
+			tempArray[index] = element;
+
+			for (int i = index + 1; i < size+1; i++) {
+				tempArray[i] = array[i - 1];
+			}
+
+			array = tempArray;
+		}
+		size++;
 	}
 
 	@Override
@@ -72,20 +101,32 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public void remove(int index) {
-		// TODO Auto-generated method stub
-
+		//
+		String[] tempArray = new String[array.length];
+		
+		tempArray = copyOf(array, index+1);
+		for(int i = index+1; i<size-1; i++) {
+			
+			tempArray[i] = array[i+1];
+		}
+		array = tempArray;
+		size--;
 	}
 
 	@Override
 	public void addAll(MyStringList sourceList) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	@Override
 	public void claer() {
 		//
-		
+		for (int i = 0; i < array.length; i++) {
+			array[i] = null;
+		}
+
+		size = 0;
 	}
 
 	@Override
@@ -94,7 +135,7 @@ public class MyStringListLogic implements MyStringList {
 		return null;
 	}
 
-	public String[] arraySizeIncrease(String[] array) {
+	private String[] arraySizeIncrease(String[] array) {
 		//
 		String[] tempArray = new String[array.length + 1];
 		for (int i = 0; i < array.length; i++) {
@@ -102,6 +143,26 @@ public class MyStringListLogic implements MyStringList {
 		}
 
 		return tempArray;
+	}
+
+	private String[] copyOf(String[] array, int index) {
+		//
+		String[] tempArray = new String[array.length];
+		
+		for (int i = 0; i < index; i++) {
+			tempArray[i] = array[i];
+		}
+
+		return tempArray;
+	}
+
+	private int isOddNumber(int value) {
+		//
+		if (value % 2 == 1) {
+			value = value + 1;
+		}
+
+		return value;
 	}
 
 }
