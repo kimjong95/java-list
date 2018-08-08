@@ -39,8 +39,8 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public MyStringIterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		//
+		return new MyStringIterator(array, size);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class MyStringListLogic implements MyStringList {
 			tempArray = copyOf(array, index);
 
 			tempArray[index] = element;
-			for (int i = index + 1; i < size+1; i++) {
+			for (int i = index + 1; i < size + 1; i++) {
 				tempArray[i] = array[i - 1];
 			}
 			array = tempArray;
@@ -78,7 +78,7 @@ public class MyStringListLogic implements MyStringList {
 			tempArray = copyOf(array, index - 1);
 			tempArray[index] = element;
 
-			for (int i = index + 1; i < size+1; i++) {
+			for (int i = index + 1; i < size + 1; i++) {
 				tempArray[i] = array[i - 1];
 			}
 
@@ -95,19 +95,35 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public void remove(String element) {
-		// TODO Auto-generated method stub
+		//
+		String[] tempArray = new String[array.length];
+		int arrayIndex = 0;
+		for (int i = 0; i < array.length; i++) {
 
+			if (array[i] == null) {
+				break;
+			}
+			if (array[i] == element) {
+				arrayIndex = arrayIndex + 1;
+			}
+			tempArray[i] = array[arrayIndex];
+			arrayIndex++;
+
+		}
+
+		array = tempArray;
+		size--;
 	}
 
 	@Override
 	public void remove(int index) {
 		//
 		String[] tempArray = new String[array.length];
-		
-		tempArray = copyOf(array, index+1);
-		for(int i = index+1; i<size-1; i++) {
-			
-			tempArray[i] = array[i+1];
+
+		tempArray = copyOf(array, index + 1);
+		for (int i = index + 1; i < size - 1; i++) {
+
+			tempArray[i] = array[i + 1];
 		}
 		array = tempArray;
 		size--;
@@ -131,8 +147,13 @@ public class MyStringListLogic implements MyStringList {
 
 	@Override
 	public String[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		//
+		String[] returnArray = new String[size];
+		for (int i = 0; i < size; i++) {
+			returnArray[i] = array[i];
+		}
+
+		return returnArray;
 	}
 
 	private String[] arraySizeIncrease(String[] array) {
@@ -148,7 +169,7 @@ public class MyStringListLogic implements MyStringList {
 	private String[] copyOf(String[] array, int index) {
 		//
 		String[] tempArray = new String[array.length];
-		
+
 		for (int i = 0; i < index; i++) {
 			tempArray[i] = array[i];
 		}
@@ -156,13 +177,41 @@ public class MyStringListLogic implements MyStringList {
 		return tempArray;
 	}
 
-	private int isOddNumber(int value) {
+	public class MyStringIterator implements StringIterator {
 		//
-		if (value % 2 == 1) {
-			value = value + 1;
+		private int index;
+		private String[] returnArray;
+		private int listSize;
+
+		public MyStringIterator(String[] array, int size) {
+			//
+			index = 0;
+			returnArray = array;
+			listSize = size;
 		}
 
-		return value;
+		@Override
+		public String next() {
+			//
+			return returnArray[index++];
+		}
+
+		@Override
+		public boolean hasNext() {
+			//
+			if (index < listSize) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public void remove() {
+			//
+			MyStringListLogic.this.remove(index-1);
+			
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package arraylist.structure;
 
+import arraylist.structure.MyStringListLogic.MyStringIterator;
+
 public interface MyStringList {
 	//
 	int size();
