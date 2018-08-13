@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 import arraylist.structure.MyStringList;
 import arraylist.structure.MyStringListLogic;
 import arraylist.structure.StringIterator;
@@ -33,7 +35,7 @@ public class Main {
 			System.out.print("list.toArray()["+i+"] 값 : " + list.toArray()[i]+", ");
 		}
 		
-		list.add(3, "NewValue1");
+		list.add(2, "NewValue1");
 		System.out.println();
 		System.out.println();
 		System.out.print("현재 List 정보(인덱스 에 추가 후) :");
@@ -51,7 +53,6 @@ public class Main {
 		System.out.println("\n listSize :" + list.size());
 		
 		list.remove("Test3");
-		System.out.println();
 		System.out.println();
 		System.out.print("Test3 지운 List 정보 :");
 		for(int i=0; i<list.size(); i++) {
@@ -75,7 +76,6 @@ public class Main {
 			System.out.print(list.get(i));
 		}
 		System.out.println("\n listSize :" + list.size());
-		
 		MyStringList addList = new MyStringListLogic();
 		addList.add("AddList1");
 		addList.add("AddList2");
@@ -90,7 +90,7 @@ public class Main {
 		}
 		System.out.println("\n listSize :" + list.size());
 		
-		list.claer();
+		list.clear();
 		System.out.println();
 		System.out.print("현재 List 정보(clear 후) :");
 		for(int i=0; i<list.size(); i++) {
@@ -98,24 +98,4 @@ public class Main {
 		}
 		System.out.println("\n listSize :" + list.size());
 	}
-//		List<String> array = new ArrayList<>();
-//		
-//		array.add("Test1");
-//		array.add("Test2");
-//		array.add("Test3");
-//		array.add("Test4");
-//		array.add("Test5");
-//		array.add("Test6");
-//		
-//		Iterator<String> iter = array.iterator();
-//		
-//		System.out.println("1 :");
-//		while(iter.hasNext()) {
-//			System.out.println(iter.next());
-//		}
-//		iter.remove();
-//		
-//		for(int i=0; i<array.size(); i++) {
-//		System.out.println(array.get(i));
-//		}
 }

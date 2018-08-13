@@ -5,12 +5,12 @@ public class MyStringListLogic implements MyStringList {
 	private String[] array;
 	private int size;
 
-	private static int default_Increase_Size = 10;
+	private static int default_Array_Size = 10;
 
 	public MyStringListLogic() {
 		//
 		size = 0;
-		array = new String[size];
+		array = new String[default_Array_Size];
 	}
 
 	@Override
@@ -22,16 +22,13 @@ public class MyStringListLogic implements MyStringList {
 	@Override
 	public boolean empty() {
 		//
-		if (size == 0) {
-			return true;
-		}
-		return false;
+		return size == 0;
 	}
 
 	@Override
 	public boolean contains(String element) {
 		//
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < size; i++) {
 			if (array[i] == element) {
 				return true;
 			}
@@ -49,85 +46,60 @@ public class MyStringListLogic implements MyStringList {
 	public void add(String element) {
 		//
 		if (array.length == size) {
-			array = arraySizeIncrease(array, default_Increase_Size);
-		
+			array = arraySizeIncrease(array, array.length / 2);
 		}
-		
-		array[array.length - 1] = element;
+		array[size] = element;
 		size++;
-
 	}
 
 	@Override
 	public void add(int index, String element) {
 		//
+		if (index > size) {
+			throw new IndexOutOfBoundsException("범위를 벗어난 index값 입니다 : " + "index");
+		}
+
 		if (array.length == size) {
-			array = arraySizeIncrease(array, default_Increase_Size);
+			array = arraySizeIncrease(array, array.length / 2);
 		}
 
-		String[] tempArray = new String[array.length];
+		array = pushArrayIndex(array, array.length, index);
+		array[index] = element;
 
-		tempArray = copyOf(array, index);
-
-		tempArray[index] = element;
-		for (int i = index + 1; i < size + 1; i++) {
-			tempArray[i] = array[i - 1];
-		}
-		array = tempArray;
 		size++;
 	}
 
 	@Override
 	public String get(int index) {
 		//
+		if (index > size) {
+			throw new IndexOutOfBoundsException("범위를 벗어난 index값 입니다 : " + "index");
+		}
+
 		return array[index];
 	}
 
 	@Override
 	public void remove(String element) {
 		//
-		String[] tempArray = new String[array.length];
-		int arrayIndex = 0;
-		for (int i = 0; i < array.length; i++) {
-
-			if (array[i] == null) {
-				break;
-			}
-			if (array[i] == element) {
-				arrayIndex = arrayIndex + 1;
-			}
-			tempArray[i] = array[arrayIndex];
-			arrayIndex++;
-
-		}
-
-		array = tempArray;
+		int index = findElementIndex(element);
+		
+		array = pullArrayIndex(array, array.length, index);
+		
 		size--;
-
-		if (array.length - size > 50) {
-
-			array = arraySizeDecrease(array, 40);
-		}
-	}	
+	}
 
 	@Override
 	public void remove(int index) {
 		//
-		String[] tempArray = new String[array.length];
-
-		tempArray = copyOf(array, index);
-		for (int i = index; i < size - 1; i++) {
-
-			tempArray[i] = array[i + 1];
-
+		if (index > size) {
+			throw new IndexOutOfBoundsException("범위를 벗어난 index값 입니다 : " + "index");
 		}
-		array = tempArray;
+
+		array = pullArrayIndex(array, array.length, index);
+		
 		size--;
 
-		if (array.length - size > 50) {
-
-			array = arraySizeDecrease(array, 40);
-		}
 	}
 
 	@Override
@@ -149,7 +121,7 @@ public class MyStringListLogic implements MyStringList {
 	}
 
 	@Override
-	public void claer() {
+	public void clear() {
 		//
 		for (int i = 0; i < array.length; i++) {
 			array[i] = null;
@@ -169,9 +141,11 @@ public class MyStringListLogic implements MyStringList {
 		return returnArray;
 	}
 
+	// private punction of ArrayList
+
 	private String[] arraySizeIncrease(String[] array, int addIndex) {
 		//
-		String[] tempArray = new String[array.length + 1];
+		String[] tempArray = new String[array.length + array.length / 2];
 		for (int i = 0; i < array.length; i++) {
 			tempArray[i] = array[i];
 		}
@@ -179,26 +153,67 @@ public class MyStringListLogic implements MyStringList {
 		return tempArray;
 	}
 
-	private String[] arraySizeDecrease(String[] array, int removeIndex) {
+//	private String[] arraySizeDecrease(String[] array, int removeIndex) {
+//		//
+//		String[] tempArray = new String[array.length - removeIndex];
+//		for (int i = 0; i < array.length; i++) {
+//			tempArray[i] = array[i];
+//		}
+//
+//		return tempArray;
+//	}
+//
+//	private String[] copyOf(String[] array, int index) {
+//		//
+//		String[] tempArray = new String[array.length];
+//
+//		for (int i = 0; i < index; i++) {
+//			tempArray[i] = array[i];
+//		}
+//
+//		return tempArray;
+//	}
+
+	private String[] pullArrayIndex(String[] array, int arraySize, int head) {
 		//
-		String[] tempArray = new String[array.length - removeIndex];
-		for (int i = 0; i < size; i++) {
+		String[] tempArray = new String[arraySize];
+		for(int i = 0; i < head; i++) {
+			tempArray[i] = array[i];
+		}
+		for(int i = head ; i < size ; i++) {
+			tempArray[i] = array[i + 1];
+		}
+		
+		return tempArray;
+
+	}
+
+	private String[] pushArrayIndex(String[] array, int arraySize, int head) {
+		//
+		String[] tempArray = new String[arraySize];
+		for (int i = 0; i < head; i++) {
 			tempArray[i] = array[i];
 		}
 
-		return tempArray;
-	}
-
-	private String[] copyOf(String[] array, int index) {
-		//
-		String[] tempArray = new String[array.length];
-
-		for (int i = 0; i < index; i++) {
-			tempArray[i] = array[i];
+		for (int i = head + 1; i < size + 1; i++) {
+			tempArray[i] = array[i - 1];
 		}
-
+		array[head] = null;
 		return tempArray;
 	}
+	
+	private int findElementIndex (String element) {
+		//
+		int elementIndex = 0;
+		for(int i = elementIndex ; i < size; i++) {
+			if(array[i] == element) {
+				break;
+			}
+			elementIndex++;
+		}
+		return elementIndex;
+	}
+	// Inner Class Iterator
 
 	public class MyStringIterator implements StringIterator {
 		//

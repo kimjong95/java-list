@@ -14,7 +14,7 @@ public interface MyStringList {
 	void remove(String element);
 	void remove(int index);
 	void addAll(MyStringList sourceList);
-	void claer();
+	void clear();
 	String[] toArray();
 	
 }
